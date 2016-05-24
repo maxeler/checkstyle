@@ -99,7 +99,8 @@ public class MainFrameModel {
      * @return true if the file should be accepted.
      */
     public static boolean shouldAcceptFile(File file) {
-        return file.isDirectory() || file.getName().endsWith(".java");
+        return file.isDirectory() || file.getName().endsWith(".java") ||
+                file.getName().endsWith(".maxj");
     }
 
     /**

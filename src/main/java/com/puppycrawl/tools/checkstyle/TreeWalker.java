@@ -96,7 +96,7 @@ public final class TreeWalker extends AbstractFileSetCheck implements ExternalRe
      * Creates a new {@code TreeWalker} instance.
      */
     public TreeWalker() {
-        setFileExtensions("java");
+        setFileExtensions("java", "maxj");
     }
 
     /**
