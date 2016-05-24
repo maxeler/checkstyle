@@ -109,6 +109,12 @@ tokens {
 
     //Support of java comments has been extended
     BLOCK_COMMENT_END;COMMENT_CONTENT;
+
+    // Tokens for MAXJ
+    EQUAL_EQUAL_EQUAL; CONNECT; HASH;
+    LITERAL_IF="IF"; LITERAL_ELSE="ELSE";
+    LITERAL_SWITCH="SWITCH"; LITERAL_CASE="CASE"; LITERAL_OTHERWISE="OTHERWISE";
+    MAXJ_CASE_GROUP;
 }
 
 {
@@ -1060,6 +1066,19 @@ traditionalStatement
                 elseStatement
         )?
 
+        // MaxJ IF-ELSE statement
+        |   "IF"^ LPAREN expression RPAREN statement
+            (
+                // CONFLICT: the old "dangling-else" problem...
+                //           ANTLR generates proper code matching
+                //             as soon as possible.  Hush warning.
+                options {
+                    warnWhenFollowAmbig = false;
+                }
+            :
+                maxJElseStatement
+        )?
+
         // For statement
         |    forStatement
 
@@ -1081,6 +1100,11 @@ traditionalStatement
         // switch/case statement
         |    "switch"^ LPAREN expression RPAREN LCURLY
                 ( casesGroup )*
+            RCURLY
+
+        // MaxJ switch statement
+        |    "SWITCH"^ LPAREN expression RPAREN LCURLY
+                ( maxJCasesGroup )*
             RCURLY
 
         // exception try-catch block
@@ -1128,6 +1152,10 @@ elseStatement
     : "else"^ statement
     ;
 
+maxJElseStatement
+    : "ELSE"^ statement
+    ;
+
 casesGroup
     :    (    // CONFLICT: to which case group do the statements bind?
             //           ANTLR generates proper code: it groups the
@@ -1160,6 +1188,40 @@ caseSList
                 statement
         )+
         {#caseSList = #(#[SLIST,"SLIST"],#caseSList);}
+    ;
+
+maxJCasesGroup
+    :    (    // CONFLICT: to which case group do the statements bind?
+            //           ANTLR generates proper code: it groups the
+            //           many "case"/"default" labels together then
+            //           follows them with the statements
+            options {
+                warnWhenFollowAmbig = false;
+            }
+            :
+            maxJCase
+        )+
+        (maxJCaseSList)?
+        {#maxJCasesGroup = #([MAXJ_CASE_GROUP, "MAXJ_CASE_GROUP"], #maxJCasesGroup);}
+    ;
+
+maxJCase
+    :    ("CASE"^ expression | "DEFAULT"^)
+    ;
+
+maxJCaseSList
+    :
+        (
+            //Here was nondeterministic warnig between default block into switch
+            // and default modifier on methods (Java8). But we have semantic check for this.
+            options {
+                warnWhenFollowAmbig = false;
+            }
+            :
+            {LA(1)!=LITERAL_DEFAULT}?
+                statement
+        )+
+        {#maxJCaseSList = #(#[SLIST,"SLIST"],#maxJCaseSList);}
     ;
 
 // The initializer for a for loop
@@ -1291,6 +1353,7 @@ assignmentExpression
             |   BAND_ASSIGN^
             |   BXOR_ASSIGN^
             |   BOR_ASSIGN^
+            |   CONNECT^
             )
             ((lambdaExpression)=>lambdaExpression
             | assignmentExpression)
@@ -1341,7 +1404,7 @@ andExpression
 
 // equality/inequality (==/!=) (level 6)
 equalityExpression
-    :    relationalExpression ((NOT_EQUAL^ | EQUAL^) relationalExpression)*
+    :    relationalExpression ((NOT_EQUAL^ | EQUAL^ | EQUAL_EQUAL_EQUAL^ | NOT_EQUAL_EQUAL^) relationalExpression)*
     ;
 
 
@@ -1375,7 +1438,7 @@ additiveExpression
 
 // multiplication/division/modulo (level 2)
 multiplicativeExpression
-    :    unaryExpression ((STAR^ | DIV^ | MOD^ ) unaryExpression)*
+    :    unaryExpression ((STAR^ | DIV^ | MOD^ | HASH^) unaryExpression)*
     ;
 
 unaryExpression
@@ -1714,6 +1777,13 @@ BAND            :    '&'        ;
 BAND_ASSIGN        :    "&="    ;
 LAND            :    "&&"    ;
 SEMI            :    ';'        ;
+
+// MAXJ tokens
+EQUAL_EQUAL_EQUAL :   "==="   ;
+NOT_EQUAL_EQUAL   :   "!=="   ;
+CONNECT           :   "<=="   ;
+HASH              :   '#'     ;
+
 
 //token signifying annotations and annotation declaration
 AT

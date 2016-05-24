@@ -3382,6 +3382,72 @@ public final class TokenTypes {
     public static final int COMMENT_CONTENT =
             GeneratedJavaTokenTypes.COMMENT_CONTENT;
 
+    /**
+     * MaxJ literal IF
+     */
+    public static final int MAXJ_IF =
+          GeneratedJavaTokenTypes.LITERAL_IF;
+
+    /**
+     * MaxJ literal ELSE
+     */
+    public static final int MAXJ_ELSE =
+          GeneratedJavaTokenTypes.LITERAL_ELSE;
+
+    /**
+     * MaxJ literal SWITCH
+     */
+    public static final int MAXJ_SWITCH =
+          GeneratedJavaTokenTypes.LITERAL_SWITCH;
+
+    /**
+     * MaxJ literal CASE
+     */
+    public static final int MAXJ_CASE =
+          GeneratedJavaTokenTypes.LITERAL_CASE;
+
+    /**
+     * MaxJ literal DEFAULT
+     */
+    public static final int MAXJ_DEFAULT =
+          GeneratedJavaTokenTypes.LITERAL_DEFAULT;
+
+    /**
+     * MaxJ literal OTHERWISE
+     */
+    public static final int MAXJ_OTHERWISE =
+          GeneratedJavaTokenTypes.LITERAL_OTHERWISE;
+
+    /**
+     * MaxJ literal ===
+     */
+    public static final int EQUAL_EQUAL_EQUAL =
+          GeneratedJavaTokenTypes.EQUAL_EQUAL_EQUAL;
+
+    /**
+     * MaxJ literal !==
+     */
+    public static final int NOT_EQUAL_EQUAL =
+          GeneratedJavaTokenTypes.NOT_EQUAL_EQUAL;
+
+    /**
+     * MaxJ literal <==
+     */
+    public static final int CONNECT =
+          GeneratedJavaTokenTypes.CONNECT;
+
+    /**
+     * MaxJ literal #
+     */
+    public static final int HASH =
+          GeneratedJavaTokenTypes.HASH;
+
+    /**
+     * MaxJ case group. Doesn't contain a colon like the standard Java one.
+     */
+    public static final int MAXJ_CASE_GROUP =
+          GeneratedJavaTokenTypes.MAXJ_CASE_GROUP;
+
     /** Prevent instantiation. */
     private TokenTypes() {
     }
