@@ -1206,7 +1206,7 @@ maxJCasesGroup
     ;
 
 maxJCase
-    :    ("CASE"^ expression | "DEFAULT"^)
+    :    ("CASE"^ expression | "OTHERWISE"^)
     ;
 
 maxJCaseSList
@@ -1218,7 +1218,7 @@ maxJCaseSList
                 warnWhenFollowAmbig = false;
             }
             :
-            {LA(1)!=LITERAL_DEFAULT}?
+            {LA(1)!=LITERAL_OTHERWISE}?
                 statement
         )+
         {#maxJCaseSList = #(#[SLIST,"SLIST"],#maxJCaseSList);}
