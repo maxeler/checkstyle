@@ -964,7 +964,7 @@ parameterDeclarationList
     :   (   ( parameterDeclaration )=> parameterDeclaration
             ( options {warnWhenFollowAmbig=false;} :
                 ( COMMA parameterDeclaration ) => COMMA parameterDeclaration )*
-            ( COMMA variableLengthParameterDeclaration )?
+            ( COMMA variableLengthParameterDeclaration )? (COMMA)?
         |
             variableLengthParameterDeclaration
         )?
@@ -1519,7 +1519,8 @@ postfixExpression
             (options{warnWhenFollowAmbig=false;} : DOT^ "class")?
 
             // an array indexing operation
-        |    lb:LBRACK^ {#lb.setType(INDEX_OP);} expression RBRACK
+            
+        |    lb:LBRACK^ {#lb.setType(INDEX_OP);} expression (COLON expression)? RBRACK
 
             // method invocation
             // The next line is not strictly proper; it allows x(3)(4) or

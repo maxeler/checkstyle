@@ -3409,12 +3409,13 @@ public final class TokenTypes {
     /**
      * MaxJ literal DEFAULT
      */
-    public static final int MAXJ_DEFAULT =
-          GeneratedJavaTokenTypes.LITERAL_DEFAULT;
-
+   public static final int MAXJ_DEFAULT =
+          GeneratedJavaTokenTypes.LITERAL_default;
+    
     /**
      * MaxJ literal OTHERWISE
      */
+   
     public static final int MAXJ_OTHERWISE =
           GeneratedJavaTokenTypes.LITERAL_OTHERWISE;
 
